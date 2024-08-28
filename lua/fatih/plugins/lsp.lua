@@ -37,14 +37,14 @@ return
                 map("gr",telescope_builtin.lsp_references, "Go to references")
                 map("gi", telescope_builtin.lsp_implementations, "Go to implementations")
                 map("K", vim.lsp.buf.hover, "Show documentation")
-                map("<leader>rn", vim.lsp.buf.rename, "Rename")
+                map("rn", vim.lsp.buf.rename, "Rename")
                 map("ca", vim.lsp.buf.code_action, "Code action")
              end,
             })
             local servers =  {
                 lua_ls = {},
-                omnisharp = {},
                 tsserver = {},
+                gopls = {},
                 html = {},
                 cssls = {},
                 jsonls = {},
