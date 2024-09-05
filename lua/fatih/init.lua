@@ -4,6 +4,7 @@ require("fatih.lazy_init")
 
 
 local autocmd = vim.api.nvim_create_autocmd
+vim.cmd.colorscheme("catppuccin")
 
 autocmd('LspAttach', {
     callback = function(e)

@@ -43,6 +43,7 @@ return
             })
             local servers =  {
                 lua_ls = {},
+                clangd = {},
                 tsserver = {},
                 gopls = {},
                 html = {},
