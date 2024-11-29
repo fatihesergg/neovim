@@ -34,7 +34,8 @@ return
                     mode = "n"
                     vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
                 end
-
+                local client = vim.lsp.get_client_by_id(event.data.client_id)
+                local bufnr = event.buf
                 -- Telescope LSP commands
                 map("gD", vim.lsp.buf.declaration, "Go to declaration")
                 map("gd", telescope_builtin.lsp_definitions, "Go to definition")
@@ -43,10 +44,14 @@ return
                 map("K", vim.lsp.buf.hover, "Show documentation")
                 map("rn", vim.lsp.buf.rename, "Rename")
                 map("ca", vim.lsp.buf.code_action, "Code action")
+
                 if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+                    map('<leader>th', function()
+                        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+                    end, '[T]oggle Inlay [H]ints')
                 end
             end,
+
         })
         local servers = {
             lua_ls = {},
@@ -54,18 +59,19 @@ return
             tsserver = {},
             gopls = {
                 settings = {
-
-                    ["ui.inlayhint.hints"] = {
-                        compositeLiteralFields = true,
-                        constantValues = true,
-                        parameterNames = true
-                    },
-                    completeUnimported = true,
-                    usePlaceholders = true,
-                    analysis = {
-                        unusedparams = true,
-                    },
-                    gofumpt = true
+                    gopls = {
+                        hints              = {
+                            compositeLiteralFields = true,
+                            constantValues = true,
+                            parameterNames = true
+                        },
+                        completeUnimported = true,
+                        usePlaceholders    = true,
+                        analysis           = {
+                            unusedparams = true,
+                        },
+                        gofumpt            = true
+                    }
                 }
             },
             html = {},
@@ -89,8 +95,11 @@ return
             },
         }
         require("fidget").setup()
-
         cmp.setup({
+            window = {
+                completion = cmp.config.window.bordered(),
+                documentation = cmp.config.window.bordered()
+            },
             completion = { completeopt = 'menu,menuone,noinsert' },
             snippet = {
                 expand = function(args)
@@ -112,10 +121,9 @@ return
             }),
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
+                { name = 'buffer' },
                 { name = 'luasnip' },
                 { name = 'path' },
-            }, {
-                { name = 'buffer' },
             })
         })
     end,
