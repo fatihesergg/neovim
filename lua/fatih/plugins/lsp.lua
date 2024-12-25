@@ -61,15 +61,16 @@ return
                 settings = {
                     gopls = {
                         hints              = {
+                            assignVariableTypes = true,
+                            rangeVariableTypes = true,
                             compositeLiteralFields = true,
-                            constantValues = true,
                             parameterNames = true
                         },
                         completeUnimported = true,
-                        usePlaceholders    = true,
-                        analysis           = {
-                            unusedparams = true,
+                        analyses           = {
+                            uunusedvariable = true,
                         },
+                        staticcheck        = true,
                         gofumpt            = true
                     }
                 }
@@ -107,7 +108,7 @@ return
                 end,
             },
             mapping = cmp.mapping.preset.insert({
-                ['<Return>'] = cmp.mapping.confirm({ select = true }),
+                ['<C-Space>'] = cmp.mapping.confirm({ select = true }),
                 ['<C-l>'] = cmp.mapping(function()
                     if luasnip.expand_or_locally_jumpable() then
                         luasnip.expand_or_jump()
