@@ -23,7 +23,7 @@ return
 
         -- capabilities
         local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+        capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
 
 
         -- LSP Attach Autocmd
@@ -56,6 +56,17 @@ return
         local servers = {
             lua_ls = {},
             clangd = {},
+            omnisharp = {
+                FormattingOptions = {
+                    EnableEditorConfigSupport = true
+                },
+                MsBuild = {},
+                RoslynExtensionsOptions = {},
+                Sdk = {
+                    IncludePrereleases = true
+                }
+            },
+
             tsserver = {},
             gopls = {
                 settings = {
@@ -95,36 +106,37 @@ return
             },
         }
         require("fidget").setup()
-        cmp.setup({
-            window = {
-                completion = cmp.config.window.bordered(),
-                documentation = cmp.config.window.bordered()
-            },
-            completion = { completeopt = 'menu,menuone,noinsert' },
-            snippet = {
-                expand = function(args)
-                    luasnip.lsp_expand(args.body)
-                end,
-            },
-            mapping = cmp.mapping.preset.insert({
-                ['<C-Space>'] = cmp.mapping.confirm({ select = true }),
-                ['<C-l>'] = cmp.mapping(function()
-                    if luasnip.expand_or_locally_jumpable() then
-                        luasnip.expand_or_jump()
-                    end
-                end, { 'i', 's' }),
-                ['<C-h>'] = cmp.mapping(function()
-                    if luasnip.locally_jumpable(-1) then
-                        luasnip.jump(-1)
-                    end
-                end, { 'i', 's' }),
-            }),
-            sources = cmp.config.sources({
-                { name = 'nvim_lsp' },
-                { name = 'buffer' },
-                { name = 'luasnip' },
-                { name = 'path' },
-            })
-        })
+        --     cmp.setup({
+        --         window = {
+        --             completion = cmp.config.window.bordered(),
+        --             documentation = cmp.config.window.bordered()
+        --         },
+        --         completion = { completeopt = 'menu,menuone,noinsert' },
+        --         snippet = {
+        --             expand = function(args)
+        --                 luasnip.lsp_expand(args.body)
+        --             end,
+        --         },
+        --         mapping = cmp.mapping.preset.insert({
+        --             ['<C-Space>'] = cmp.mapping.confirm({ select = true }),
+        --             ['<C-l>'] = cmp.mapping(function()
+        --                 if luasnip.expand_or_locally_jumpable() then
+        --                     luasnip.expand_or_jump()
+        --                 end
+        --             end, { 'i', 's' }),
+        --             ['<C-h>'] = cmp.mapping(function()
+        --                 if luasnip.locally_jumpable(-1) then
+        --                     luasnip.jump(-1)
+        --                 end
+        --             end, { 'i', 's' }),
+        --         }),
+        --         sources = cmp.config.sources({
+        --             { name = 'nvim_lsp' },
+        --             { name = 'buffer' },
+        --             { name = 'luasnip' },
+        --             { name = 'path' },
+        --         })
+        --     })
+        -- end,
     end,
 }
