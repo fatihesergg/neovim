@@ -75,8 +75,7 @@ return
                     }
                 }
             },
-            html = {},
-            cssls = {},
+            emmet_ls = {},
             jsonls = {},
             yamlls = {},
             bashls = {},
